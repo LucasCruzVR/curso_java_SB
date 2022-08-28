@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.projetoaula.domain.enums.TipoCliente;
 
 @Entity
-public class Cliente implements Serializable{
+public class Cliente implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -29,15 +29,18 @@ public class Cliente implements Serializable{
 	private String email;
 	private String CpfOuCnpj;
 	private Integer tipo;
-	
+
 	@ElementCollection
 	@CollectionTable(name = "telefone")
 	private Set<String> telefones = new HashSet<>();
-	
+
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
-	
+
+	@OneToMany(mappedBy = "cliente")
+	private List<Pedido> pedidos = new ArrayList<>();
+
 	public Cliente() {
 	}
 
@@ -49,7 +52,6 @@ public class Cliente implements Serializable{
 		CpfOuCnpj = cpfOuCnpj;
 		this.tipo = tipo.getCod();
 	}
-
 
 	public Integer getId() {
 		return id;
@@ -107,6 +109,14 @@ public class Cliente implements Serializable{
 		this.enderecos = enderecos;
 	}
 
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -123,5 +133,5 @@ public class Cliente implements Serializable{
 		Cliente other = (Cliente) obj;
 		return Objects.equals(id, other.id);
 	}
-	
+
 }
