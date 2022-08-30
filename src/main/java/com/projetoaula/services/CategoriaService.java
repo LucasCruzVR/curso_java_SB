@@ -3,10 +3,12 @@ package com.projetoaula.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.projetoaula.domain.Categoria;
 import com.projetoaula.repositories.CategoriaRepository;
+import com.projetoaula.services.exceptions.DataIntegrityException;
 import com.projetoaula.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -30,5 +32,14 @@ public class CategoriaService {
 	public Categoria update(Categoria obj) {
 		find(obj.getId());
 		return repo.save(obj);
+	}
+	
+	public void delete(Integer id) {
+		find(id);
+		try {
+			repo.deleteById(id);
+		} catch(DataIntegrityViolationException err) {
+			throw new DataIntegrityException("Não é possível excluir uma Categoria que tenha Produtos vinculados.");
+		}
 	}
 }
