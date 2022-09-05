@@ -1,12 +1,15 @@
 package com.projetoaula.repositories;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.data.jpa.repository.JpaRepository;
+import javax.transaction.Transactional;
 
-import com.projetoaula.domain.Categoria;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 import com.projetoaula.domain.Cliente;
 
 @Repository
-public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
-	
+public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
+
+	@Transactional()
+	Cliente findByEmail(String email);
 }
